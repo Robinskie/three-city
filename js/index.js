@@ -6,26 +6,27 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 /* INIT */
-// Scene aanmaken
-const scene = new THREE.Scene();
-
 // Renderer
-const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true});
+const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
 renderer.shadowMap.enabled = true;
 renderer.setSize(canvas.width, canvas.height);
+
+// Scene aanmaken
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#FECF96');
 
 // Camera
 const fov = 75;
 const ratio =  canvas.width / canvas.height;
 const camera = new THREE.PerspectiveCamera(fov, ratio, 0.1, 1000);
-camera.position.set(5, 2.5, 5);
+camera.position.set(8, 8, 8);
 camera.lookAt(0, 0, 0)
 scene.add(camera);
 
 // Lights
-const ambientLight = new THREE.AmbientLight('#FFF', 1);
+const ambientLight = new THREE.AmbientLight('#FFFFFF', 1);
 
-const directionalLight = new THREE.DirectionalLight('#FEF7C2', 0.1);
+const directionalLight = new THREE.DirectionalLight('#FECF96', 0.5);
 directionalLight.position.set(25, 25, 25);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.top = 50; // limieten van de lights instellen voor performance
@@ -49,7 +50,7 @@ const groundMaterial = new THREE.MeshStandardMaterial( // materiaal
     {color: '#E88E5A'}
 ); 
 const ground = new THREE.Mesh(groundGeometry, groundMaterial); // mesh = vorm + materiaal
-ground.rotation.x = Math.PI * 1.5; // draaien om horizontaal te krijgen
+ground.rotation.x = -Math.PI * 0.5; // draaien om horizontaal te krijgen
 ground.receiveShadow = true;
 
 scene.add(ground);
@@ -112,6 +113,9 @@ document.querySelector('.button').addEventListener('click', () => {
     // Toevoegen
     createBuilding(width, height, depth, x, y, rotation)
 });
+
+const fog = new THREE.Fog('#FECF96', 1, 100);
+scene.fog = fog;
 
 const clock = new THREE.Clock();
 
